@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>cps</title>
+    <style>
+        @import url('https://fonts.cdnfonts.com/css/noah-grotesque');
+        
+        body {
+            background: #151515;
+            color: white;
+            font-family: 'Noah Grotesque', sans-serif;
+        }
+
+        h1 {
+            text-align: center;
+            margin-top: 150px;
+            font-size: 50px;
+            transition: .11s;
+        }
+
+        div {
+            user-select: none;
+        }
+
+        #click {
+            margin: auto;
+            width: 570px;
+            height: 35vh;
+            border: 3px dashed white;
+            border-radius: 20px;
+            transition: .5s;
+            position: relative;
+        }
+
+        #click:hover {
+            border: 3px dashed white;
+            border-radius: 50px;
+            background: #202020;
+        }
+
+        #mask {
+            height: 100%;
+            width: 100%;
+            clip-path: url(#roundedClip);
+            position: relative;
+            overflow: hidden;
+        }
+
+        #anim {
+            background: radial-gradient(#151515, #151515, #525252);
+            border-radius: 100%;
+            border: 2px solid white;
+            width: 200px;
+            height: 200px;
+            transform-origin: center;
+            opacity: 0;
+            position: absolute;
+        }
+
+        @keyframes anim {
+            0% {transform: scale(0); opacity: 100%; border: 50px solid white; padding: 0px;}
+            100% {transform: scale(1.5); opacity: 0%; border: 3px solid white; padding: 47px;}
+        }
+
+        #stats {
+            text-align: center;
+            user-select: none;
+            margin: auto auto 50px auto;
+            font-size: 40px;
+            background: #201050;
+            width: 550px;
+            padding: 10px;
+            border: 2px solid white;
+            border-radius: 40px;
+            transition: .5s cubic-bezier(0.87, 0, 0.13, 1);
+        }
+
+        #stats:active {
+            width: 150px;
+        }
+
+    </style>
+</head>
+<body>
+    <h1>klikaj tam na dole i bedzie git</h1>
+
+    <section id="stats">
+        <span>CPS:</span>
+        <span id="number">0</span>
+    </section>
+
+    <div id="click">
+        <div id="mask">
+            <div id="anim"></div>
+        </div>
+    </div>
+
+    <!--svg used as a mask cuz css clip-path is fuckin dumb-->
+    <svg width="0" height="0">
+        <defs>
+          <clipPath id="roundedClip" clipPathUnits="objectBoundingBox">
+            <rect x="0" y="0" width="1" height="1" rx="0.09" ry="0.18" />
+          </clipPath>
+        </defs>
+      </svg>
+
+    <script>
+        const click = document.getElementById("click");
+        const mask = document.getElementById("mask");
+        const cpsNum = document.getElementById("number");
+        var cps = 0;
+        var crazy = false;
+
+        function moveElementToMouse(event) {
+            cps = cps+1;
+            cpsNum.textContent = cps
+            setTimeout(() => {
+            cps = cps-1;
+            cpsNum.textContent = cps
+            }, 1000);
+
+            if(cps>9) {
+                crazy = true;
+            }
+            // Clone the `anim` element
+            const animClone = document.getElementById("anim").cloneNode(true);
+            
+            // Get the `click` element's bounding box to position the clone relative to it
+            const clickRect = click.getBoundingClientRect();
+
+            // Position and style the clone
+            animClone.style.position = "absolute";
+            animClone.style.left = `${event.clientX - clickRect.left - 150}px`; // Center horizontally
+            animClone.style.top = `${event.clientY - clickRect.top - 150}px`; // Center vertically
+            animClone.style.opacity = "100%";
+            animClone.style.animation = "anim .6s ease-out";
+            if(crazy==true) {
+                var color = `hsl(${Math.random()*360}, 100%, 50%, 50%)`
+                animClone.style.background = color;
+            };
+
+            // Append the clone to the `mask` div to apply clipping
+            mask.appendChild(animClone);
+
+            // Remove the clone once the animation ends
+            animClone.addEventListener("animationend", () => {
+                animClone.remove();
+            }, { once: true });
+        }
+
+        click.addEventListener('click', moveElementToMouse);
+    </script>
+</body>
+</html>
