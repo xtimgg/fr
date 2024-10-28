@@ -115,11 +115,7 @@
         const cpsNum = document.getElementById("number");
         const pbNum = document.getElementById("number2");
         var cps = 0;
-        if(Number.isInteger(getCookie(pb))){
-            var pb = getCookie(pb);
-         } else {
-            var pb = 0;
-         }
+        var pb = document.cookie;
         var crazy = false;
 
         function moveElementToMouse(event) {
@@ -134,7 +130,7 @@
                 pb = cps;
                 pbNum.textContent = pb;
                 console.log(pb)
-                document.cookie = 'pb=' + pb + '; expires=Wed, 1 Jan 2070 13:47:11 UTC; path=/; SameSite=Lax; Secure';
+                document.cookie = pb;
             }
 
             if(cps>9) {
