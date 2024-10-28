@@ -74,11 +74,6 @@
             padding: 10px;
             border: 2px solid white;
             border-radius: 40px;
-            transition: .5s cubic-bezier(0.87, 0, 0.13, 1);
-        }
-
-        #stats:active {
-            width: 150px;
         }
 
     </style>
@@ -89,6 +84,8 @@
     <section id="stats">
         <span>CPS:</span>
         <span id="number">0</span>
+        <span style="margin-left: 50px;">PB:</span>
+        <span id="number2">0</span>
     </section>
 
     <div id="click">
@@ -107,19 +104,38 @@
       </svg>
 
     <script>
+        function getCookie(name) {
+        const value = `; ${document.cookie}`;
+        const parts = value.split(`; ${name}=`);
+        if (parts.length === 2) return parts.pop().split(';').shift();
+        }
+
         const click = document.getElementById("click");
         const mask = document.getElementById("mask");
         const cpsNum = document.getElementById("number");
+        const pbNum = document.getElementById("number2");
         var cps = 0;
+        if(Number.isInteger(getCookie(pb))){
+            var pb = getCookie(pb);
+         } else {
+            var pb = 0;
+         }
         var crazy = false;
 
         function moveElementToMouse(event) {
             cps = cps+1;
-            cpsNum.textContent = cps
+            cpsNum.textContent = cps;
             setTimeout(() => {
             cps = cps-1;
             cpsNum.textContent = cps
             }, 1000);
+
+            if(pb<cps) {
+                pb = cps;
+                pbNum.textContent = pb;
+                console.log(pb)
+                document.cookie = 'pb=' + pb + '; expires=Wed, 1 Jan 2070 13:47:11 UTC; path=/; SameSite=Lax; Secure';
+            }
 
             if(cps>9) {
                 crazy = true;
