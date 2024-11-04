@@ -132,7 +132,7 @@
         const avgdelayNum = document.getElementById("number4");
         var cps = 0;
         var pb = 0;
-        pb += document.cookie;
+        pb = Math.abs(pb + document.cookie);
         pbNum.textContent = pb;
         var crazy = false;
         let startTime = new Date();
