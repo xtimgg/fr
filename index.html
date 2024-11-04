@@ -76,10 +76,17 @@
             border-radius: 40px;
         }
 
+        #debug {
+            right: 5%;
+            top: 3%;
+            position: absolute;
+            display: none;
+        }
+
     </style>
 </head>
 <body>
-    <h1>klikaj tam na dole i bedzie git</h1>
+    <h1 id="info">klikaj tam na dole i bedzie git</h1>
 
     <section id="stats">
         <span>CPS:</span>
@@ -93,6 +100,13 @@
             <div id="anim"></div>
         </div>
     </div>
+
+    <section id="debug">
+        <span>delay between clicks:</span>
+        <span id="number3">0</span> <br>
+        <span>difference between delays (last 10s):</span>
+        <span id="number4">0</span> <br>
+    </section>
 
     <!--svg used as a mask cuz css clip-path is fuckin dumb-->
     <svg width="0" height="0">
@@ -114,14 +128,43 @@
         const mask = document.getElementById("mask");
         const cpsNum = document.getElementById("number");
         const pbNum = document.getElementById("number2");
+        const delayNum = document.getElementById("number3");
+        const avgdelayNum = document.getElementById("number4");
         var cps = 0;
         var pb = document.cookie;
         pbNum.textContent = pb;
         var crazy = false;
+        let startTime = new Date();
+        let endTime = new Date();
+        let clicksTen = 0;
+        let delayTen = 0;
+        let timeElapsed = 0;
+        let _timeElapsed = 0;
+
 
         function moveElementToMouse(event) {
-            cps = cps+1;
+            cps += 1;
             cpsNum.textContent = cps;
+            clicksTen += 1;
+            setTimeout(() => {
+            clicksTen -= 1;
+            }, 10000);
+            var endTime = new Date();
+            timeElapsed = endTime - startTime;
+            delayTen += Math.abs(timeElapsed-_timeElapsed);
+            var _delayDifference = Math.abs(timeElapsed-_timeElapsed);
+            _timeElapsed = timeElapsed;
+            setTimeout(() => {
+            delayTen -= _delayDifference;
+            }, 10000);
+            delayNum.textContent = timeElapsed;
+            avgdelayNum.textContent = Math.round(delayTen/clicksTen);
+            if(Math.round(delayTen/clicksTen)<3) {
+                document.getElementById('info').textContent = "ale nie na autoclickerze debilu XD";
+            } else { 
+                document.getElementById('info').textContent = "klikaj tam na dole i bedzie git";
+            }
+            startTime = new Date();
             setTimeout(() => {
             cps = cps-1;
             cpsNum.textContent = cps
@@ -164,6 +207,18 @@
         }
 
         click.addEventListener('click', moveElementToMouse);
+
+        document.addEventListener('keyup', function (event) {
+            if (event.ctrlKey && event.altKey && event.key === 'd') {
+                
+                var element = document.getElementById('debug');
+                if (element.style.display = 'none') {
+                    element.style.display = 'block';
+                } else {
+                    element.style.display = 'none';
+                }
+            }
+        });
     </script>
 </body>
 </html>
