@@ -11,6 +11,15 @@
             background: #151515;
             color: white;
             font-family: 'Noah Grotesque', sans-serif;
+            overflow-y: hidden;
+        }
+
+        .sect {
+            position: absolute;
+            left: 0; 
+            right: 0; 
+            margin-inline: auto; 
+            width: fit-content;
         }
 
         h1 {
@@ -20,9 +29,6 @@
             transition: .11s;
         }
 
-        div {
-            user-select: none;
-        }
 
         #click {
             margin: auto;
@@ -32,6 +38,7 @@
             border-radius: 20px;
             transition: .5s;
             position: relative;
+            user-select: none;
         }
 
         #click:hover {
@@ -83,47 +90,116 @@
             display: none;
         }
 
+        nav {
+            position: absolute;
+            float: left;
+            top: 200px;
+            left: -270px;
+            padding-right: 8%;
+            transition: .6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        nav:hover {
+            left: -50px;
+        }
+
+        nav ul li {
+            list-style-type: none;
+            text-transform: uppercase;
+            text-align: center;
+            border: 2px solid white;
+            padding: 10% 35%;
+            width: 50%;
+            font-size: 25px;
+            transition: .6s cubic-bezier(0.16, 1, 0.3, 1);
+            cursor: pointer;
+            user-select: none;
+        }
+
+        nav ul li:hover {
+            padding: 25% 39%;
+            background-color: rgba(255, 255, 255, 0.26);
+        }
+
+        nav ul li:active {
+            transition: .1s cubic-bezier(0.16, 1, 0.3, 1);
+            padding: 30%;
+        }
+
+        @keyframes moveout {
+            0% {transform: translateY(0%);}
+            100% {transform: translateY(-110vh);}
+        }
+
+        @keyframes movein {
+            0% {transform: translateY(110vh);}
+            100% {transform: translateY(0);}
+        }
+
     </style>
 </head>
 <body>
-    <h1 id="info">klikaj tam na dole i bedzie git</h1>
+    
+    <nav>
+        <ul>
+            <li id="bcps">cps</li>
+            <li id="bcalc">calc</li>
+            <li id="bcs">coming soon</li>
+            <li id="ep">fajne takie</li>
+            <li id="rr">tajemnica 🤫</li>
+        </ul>
+    </nav>
 
-    <section id="stats">
-        <span>CPS:</span>
-        <span id="number">0</span>
-        <span style="margin-left: 50px;">PB:</span>
-        <span id="number2">0</span>
-    </section>
+    <div id="cps" class="sect">
+        <h1 id="info">klikaj tam na dole i bedzie git</h1>
 
-    <div id="click">
-        <div id="mask">
-            <div id="anim"></div>
+        <section id="stats">
+            <span>CPS:</span>
+            <span id="number">0</span>
+            <span style="margin-left: 50px;">PB:</span>
+            <span id="number2">0</span>
+        </section>
+
+        <div id="click">
+            <div id="mask">
+                <div id="anim"></div>
+            </div>
         </div>
+
+        <section id="debug">
+            <span>delay between clicks:</span>
+            <span id="number3">0</span> <br>
+            <span>difference between delays (last 10s):</span>
+            <span id="number4">0</span> <br>
+        </section>
+
+        <!--svg used as a mask cuz css clip-path is fuckin dumb-->
+        <svg width="0" height="0">
+            <defs>
+            <clipPath id="roundedClip" clipPathUnits="objectBoundingBox">
+                <rect x="0" y="0" width="1" height="1" rx="0.09" ry="0.18" />
+            </clipPath>
+            </defs>
+        </svg>
     </div>
 
-    <section id="debug">
-        <span>delay between clicks:</span>
-        <span id="number3">0</span> <br>
-        <span>difference between delays (last 10s):</span>
-        <span id="number4">0</span> <br>
-    </section>
+    <div id="calc" class="sect">
+        <h1>bedzie kiedys lol</h1>
+    </div>
 
-    <!--svg used as a mask cuz css clip-path is fuckin dumb-->
-    <svg width="0" height="0">
-        <defs>
-          <clipPath id="roundedClip" clipPathUnits="objectBoundingBox">
-            <rect x="0" y="0" width="1" height="1" rx="0.09" ry="0.18" />
-          </clipPath>
-        </defs>
-      </svg>
+    <div id="cs" class="sect">
+        <h1>no i po chuj klikasz to jak pisze ze coming soon</h1>
+    </div>
 
     <script>
-        function getCookie(name) {
-        const value = `; ${document.cookie}`;
-        const parts = value.split(`; ${name}=`);
-        if (parts.length === 2) return parts.pop().split(';').shift();
-        }
-
+        const cpsS = document.getElementById("cps");
+        const calcS = document.getElementById("calc");
+        const csS = document.getElementById("cs");
+        const cpsB = document.getElementById("bcps");
+        const calcB = document.getElementById("bcalc");
+        const csB = document.getElementById("bcs");
+        const ep = document.getElementById("ep");
+        const rr = document.getElementById("rr");
         const click = document.getElementById("click");
         const mask = document.getElementById("mask");
         const cpsNum = document.getElementById("number");
@@ -141,6 +217,11 @@
         let delayTen = 0;
         let timeElapsed = 0;
         let _timeElapsed = 0;
+
+        cpsS.style.display = 'block';
+        calcS.style.display = 'none';
+        csS.style.display = 'none';
+        var currentS = cpsS;
 
 
         function moveElementToMouse(event) {
@@ -181,6 +262,10 @@
             if(cps>9) {
                 crazy = true;
             }
+
+            
+            // to ai mi pisalo w sensie samo to klonowanie bo animacja autorska >>
+
             // Clone the `anim` element
             const animClone = document.getElementById("anim").cloneNode(true);
             
@@ -206,7 +291,28 @@
                 animClone.remove();
             }, { once: true });
         }
+        // << do tego miejsca ai modified code
 
+        let animating = false;
+
+        function change(S) {
+            if(animating==true || S==currentS) {
+                return;
+            }
+
+            animating = true;
+            setTimeout(() => animating = false, 610)
+            currentS.style.animation = `moveout .6s cubic-bezier(0.16, 1, 0.3, 1)`;
+            _currentS=currentS;
+            setTimeout(() => _currentS.style.display = `none`, 600)
+            currentS = S;
+            S.style.display = `block`;
+            S.style.animation = `movein .6s cubic-bezier(0.16, 1, 0.3, 1)`;
+        }
+
+
+
+        
         click.addEventListener('click', moveElementToMouse);
 
         document.addEventListener('keyup', function (event) {
@@ -220,6 +326,14 @@
                 }
             }
         });
+
+        cpsB.addEventListener('click', () => change(cpsS));
+        calcB.addEventListener('click', () => change(calcS));
+        csB.addEventListener('click', () => change(csS));
+        ep.addEventListener('click', () => window.open('https://xtimgg.github.io/meow/', '_blank').focus);
+        rr.addEventListener('click', () => window.open('https://bitly.com/98K8eH', '_blank').focus);
+        
+
     </script>
 </body>
 </html>
