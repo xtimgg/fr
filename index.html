@@ -209,16 +209,20 @@
             document.cookie = name + "=" + encodeURIComponent(value) + expires + "; path=/";
         }
 
-        function getCookie(name) {
-            const nameEQ = name + "=";
-            const cookies = document.cookie.split(';');
-            for (let cookie of cookies) {
-                while (cookie.charAt(0) === ' ') cookie = cookie.substring(1);
-                if (cookie.indexOf(nameEQ) === 0) {
-                    return decodeURIComponent(cookie.substring(nameEQ.length));
+        function getCookie(cname) {
+            let name = cname + "=";
+            let decodedCookie = decodeURIComponent(document.cookie);
+            let ca = decodedCookie.split(';');
+            for(let i = 0; i <ca.length; i++) {
+                let c = ca[i];
+                while (c.charAt(0) == ' ') {
+                c = c.substring(1);
+                }
+                if (c.indexOf(name) == 0) {
+                return c.substring(name.length, c.length);
                 }
             }
-            return null;
+            return "";
         }
 
         const cpsS = document.getElementById("cps");
@@ -246,32 +250,26 @@
         let timeElapsed = 0;
         let _timeElapsed = 0;
 
-        cpsS.style.display = 'block';
-        calcS.style.display = 'none';
-        csS.style.display = 'none';
-        var currentS = cpsS;
-
-        window.addEventListener('load', () => {
-            const sectionCookie = getCookie("section");
-
-            switch (sectionCookie) {
-                case "cpsS":
-                    currentS = cpsS;
-                    change(cpsS);
-                    break;
-                case "calcS":
-                    currentS = calcS;
-                    change(calcS);
-                    break;
-                case "csS":
-                    currentS = csS;
-                    change(csS);
-                    break;
-                default:
-                    currentS = cpsS;
-                    break;
-            }
-        });
+        const sectionCookie = getCookie("section") || cpsS;
+        document.getElementById('info').textContent = sectionCookie;
+        
+        switch (sectionCookie) {
+            case "cpsS":
+                currentS = cpsS;
+                change(cpsS);
+                break;
+            case "calcS":
+                currentS = calcS;
+                change(calcS);
+                break;
+            case "csS":
+                currentS = csS;
+                change(csS);
+                break;
+            default:
+                currentS = cpsS;
+                break;
+        }
 
         function moveElementToMouse(event) {
             cps += 1;
