@@ -26,7 +26,6 @@
             text-align: center;
             margin-top: 150px;
             font-size: 50px;
-            transition: .11s;
         }
 
 
@@ -92,11 +91,13 @@
 
         nav {
             position: absolute;
+            z-index: 999;
             float: left;
             top: 200px;
             left: -270px;
             padding-right: 8%;
             transition: .6s cubic-bezier(0.16, 1, 0.3, 1);
+            height: 100%;
         }
 
         nav:hover {
@@ -114,11 +115,16 @@
             transition: .6s cubic-bezier(0.16, 1, 0.3, 1);
             cursor: pointer;
             user-select: none;
+            background: linear-gradient(to right, #404040 50%, #303030 50%) repeat;
+            background-position: -100% 0;
+            background-size: 50%;
+            filter: brightness(50%);
         }
 
         nav ul li:hover {
+            filter: brightness(100%) !important;
             padding: 25% 39%;
-            background-color: rgba(255, 255, 255, 0.26);
+            background-position: 8% 0;
         }
 
         nav ul li:active {
@@ -128,6 +134,7 @@
 
         @keyframes moveout {
             0% {transform: translateY(0%);}
+            50% {transform: translateY(-110vh);}
             100% {transform: translateY(-110vh);}
         }
 
@@ -146,7 +153,7 @@
             <li id="bcalc">calc</li>
             <li id="bcs">coming soon</li>
             <li id="ep">fajne takie</li>
-            <li id="rr">tajemnica 🤫</li>
+            <li id="rr">nothin 🤫</li>
         </ul>
     </nav>
 
@@ -192,6 +199,28 @@
     </div>
 
     <script>
+        function setCookie(name, value, days = 3650) {
+            let expires = "";
+            if (days) {
+                const date = new Date();
+                date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));  // days in milliseconds
+                expires = "; expires=" + date.toUTCString();
+            }
+            document.cookie = name + "=" + encodeURIComponent(value) + expires + "; path=/";
+        }
+
+        function getCookie(name) {
+            const nameEQ = name + "=";
+            const cookies = document.cookie.split(';');
+            for (let cookie of cookies) {
+                while (cookie.charAt(0) === ' ') cookie = cookie.substring(1);
+                if (cookie.indexOf(nameEQ) === 0) {
+                    return decodeURIComponent(cookie.substring(nameEQ.length));
+                }
+            }
+            return null;
+        }
+
         const cpsS = document.getElementById("cps");
         const calcS = document.getElementById("calc");
         const csS = document.getElementById("cs");
@@ -207,8 +236,7 @@
         const delayNum = document.getElementById("number3");
         const avgdelayNum = document.getElementById("number4");
         var cps = 0;
-        var pb = "0";
-        pb = Math.abs(pb + document.cookie);
+        var pb = parseInt(getCookie("pb")) || 0;
         pbNum.textContent = pb;
         var crazy = false;
         let startTime = new Date();
@@ -223,6 +251,27 @@
         csS.style.display = 'none';
         var currentS = cpsS;
 
+        window.addEventListener('load', () => {
+            const sectionCookie = getCookie("section");
+
+            switch (sectionCookie) {
+                case "cpsS":
+                    currentS = cpsS;
+                    change(cpsS);
+                    break;
+                case "calcS":
+                    currentS = calcS;
+                    change(calcS);
+                    break;
+                case "csS":
+                    currentS = csS;
+                    change(csS);
+                    break;
+                default:
+                    currentS = cpsS;
+                    break;
+            }
+        });
 
         function moveElementToMouse(event) {
             cps += 1;
@@ -255,8 +304,7 @@
             if(pb<cps) {
                 pb = cps;
                 pbNum.textContent = pb;
-                console.log(pb)
-                document.cookie = pb;
+                setCookie("pb", pb);
             }
 
             if(cps>9) {
@@ -294,20 +342,60 @@
         // << do tego miejsca ai modified code
 
         let animating = false;
+        let pendingChange = "";
 
         function change(S) {
-            if(animating==true || S==currentS) {
+            if(S==currentS) {
+                return;
+            }
+
+            if(animating==true) {
+                pendingChange = S;
                 return;
             }
 
             animating = true;
-            setTimeout(() => animating = false, 610)
-            currentS.style.animation = `moveout .6s cubic-bezier(0.16, 1, 0.3, 1)`;
+            setTimeout(() => {
+                animating = false
+                if (pendingChange != "") {
+                    change(pendingChange)
+                }
+                pendingChange = "";
+            }, 610)
+            currentS.style.animation = 'moveout 2s cubic-bezier(0.16, 1, 0.3, 1)';
             _currentS=currentS;
-            setTimeout(() => _currentS.style.display = `none`, 600)
+            setTimeout(() => _currentS.style.display = 'none', 600)
             currentS = S;
-            S.style.display = `block`;
-            S.style.animation = `movein .6s cubic-bezier(0.16, 1, 0.3, 1)`;
+            setCookie("section", currentS);
+            S.style.display = 'block';
+            S.style.animation = 'movein .6s cubic-bezier(0.16, 1, 0.3, 1)';
+
+            switch(currentS) {
+                case cpsS:
+                    cpsB.style.filter = 'brightness(100%)'
+                    calcB.style.filter = 'brightness(50%)'
+                    csB.style.filter = 'brightness(50%)'
+                    cpsB.style.textShadow = '0 0 10px #fff, 0 0 20px #fff, 0 0 30px #e2e2e2, 0 0 40px #dbdbdb'
+                    calcB.style.textShadow = ''
+                    csB.style.textShadow = ''
+                    break;
+                case calcS:
+                    calcB.style.filter = 'brightness(100%)'
+                    cpsB.style.filter = 'brightness(50%)'
+                    csB.style.filter = 'brightness(50%)'
+                    calcB.style.textShadow = '0 0 10px #fff, 0 0 20px #fff, 0 0 30px #e2e2e2, 0 0 40px #dbdbdb'
+                    cpsB.style.textShadow = ''
+                    csB.style.textShadow = ''
+                    break;
+                case csS:
+                    csB.style.filter = 'brightness(100%)'
+                    cpsB.style.filter = 'brightness(50%)'
+                    calcB.style.filter = 'brightness(50%)'
+                    csB.style.textShadow = '0 0 10px #fff, 0 0 20px #fff, 0 0 30px #e2e2e2, 0 0 40px #dbdbdb'
+                    cpsB.style.textShadow = ''
+                    calcB.style.textShadow = ''
+                    break;  
+            }
         }
 
 
