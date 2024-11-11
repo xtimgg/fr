@@ -13,7 +13,7 @@
             background: #151515;
             color: white;
             font-family: 'Noah Grotesque', sans-serif;
-            text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #e2e2e2, 0 0 40px #dbdbdb;
+            text-shadow: 0 0 5px #fff, 0 0 10px #ffffffb2, 0 0 20px #e2e2e271, 0 0 30px #dbdbdb;
             overflow-y: hidden;
         }
 
@@ -213,6 +213,15 @@
             100% {transform: translateY(0%);}
         }
 
+        @keyframes statePopIn {
+            0% {left: -25px;}
+            100% {left: 1%;}
+        }
+        @keyframes statePopOut {
+            0% {left: 1%;}
+            100% {left: -25px;}
+        }
+
         #calcInputContainer {
             margin: auto;
             background-color: black;
@@ -222,6 +231,7 @@
             border-radius: 1vh;
             clip-path: inset(0% 0%);
             transition: .1s cubic-bezier(0.34, 1.56, 0.64, 1);
+            position: relative;
         }
 
         #calcInputContainer:active {
@@ -259,6 +269,14 @@
         
         .cNumB {
             background-color: #202020;
+        }
+
+        #calcState {
+            position: absolute;
+            top: 30%;
+            left: 1%;
+            font-family: 'Seven Segment', sans-serif;
+            font-size: 200%;
         }
     </style>
 </head>
@@ -310,7 +328,7 @@
     <div id="calc" class="sect">
         <h1>kalkulalaltor (nie dziaua jeszcze wszystko)</h1>
 
-        <div id="calcInputContainer"><input type="number" id="calcInput"></div>
+        <div id="calcInputContainer"><input type="number" id="calcInput"><span id="calcState"></span></div>
         <button class="calcButton" id="C">C</button>
         <button class="calcButton" id=";3">;3</button>
         <button class="calcButton" id="lol">lol</button>
@@ -386,6 +404,7 @@
         const avgdelayNum = document.getElementById("number4");
 
         const calcInput = document.getElementById("calcInput");
+        let calcInputOverwrite = false;
 
         function maxlenght() {
             if (calcInput.value.length > 16) {
@@ -402,6 +421,11 @@
         }
 
         calcInput.oninput = function () {
+            if(calcInputOverwrite) {
+                let inputt = calcInput.value.slice(-1);
+                setTimeout(() => calcInput.value = inputt, 10)
+                calcInputOverwrite = false;
+            }
             maxlenght();
             inAnim();
         }
@@ -608,6 +632,10 @@
 
         function calcBF(num) {
             document.getElementById(num).addEventListener('click', () => {
+                if(calcInputOverwrite) {
+                    calcInput.value = "";
+                    calcInputOverwrite = false;
+                }
                 if (!addComma) {
                     calcInput.value += num;
                     inAnim();
@@ -643,7 +671,6 @@
             switchAnim();
             setTimeout(() => {calcInput.value *= calcInput.value; maxlenght();}, 150)
         });
-        
 
         document.getElementById('log').addEventListener('click', () => {
             switchAnim();
@@ -652,7 +679,127 @@
         
         document.getElementById('C').addEventListener('click', () => {
             switchAnim();
+            outAnimS()
+            calcState = "";
+            setTimeout(() => calcSt.textContent = "", 150)
             setTimeout(() => calcInput.value = "", 100)
+        });
+        
+
+        let firstValue = 0;
+        let calcState = "";
+        calcSt = document.getElementById('calcState');
+
+        
+        function inAnimS() {
+            calcSt.style.animation = "none";
+            void calcSt.offsetWidth;
+            calcSt.style.animation = "";
+            calcSt.style.animation = "statePopIn .15s cubic-bezier(0.34, 1.56, 0.64, 1)";
+        }
+        
+        function outAnimS() {
+            calcSt.style.animation = "none";
+            void calcSt.offsetWidth;
+            calcSt.style.animation = "";
+            calcSt.style.animation = "statePopOut .15s cubic-bezier(.98,-0.64,.1,1.63)";
+        }
+
+        function equal(n=false) {
+            if(n) {
+                switchAnim();
+                if(calcState=="addition") {
+                    setTimeout(() => calcInput.value = Number(firstValue) + Number(calcInput.value), 150)
+                } else if(calcState=="substract") {
+                    setTimeout(() => calcInput.value = Number(calcInput.value) - Number(firstValue), 150)
+                } else if(calcState=="multiply") {
+                    setTimeout(() => calcInput.value = Number(firstValue) * Number(calcInput.value), 150)
+                } else if(calcState=="divide") {
+                    setTimeout(() => calcInput.value = Number(calcInput.value) / Number(firstValue), 150)
+                }
+                calcInputOverwrite = true;
+            } else {
+                inAnim();
+                if(calcState=="addition") {
+                    calcInput.value = Number(firstValue) + Number(calcInput.value);
+                } else if(calcState=="substract") {
+                    calcInput.value = Number(firstValue) - Number(calcInput.value);
+                } else if(calcState=="multiply") {
+                    calcInput.value = Number(firstValue) * Number(calcInput.value);
+                } else if(calcState=="divide") {
+                    calcInput.value = Number(firstValue) / Number(calcInput.value);
+                }
+                calcInputOverwrite = true;
+            }
+        }
+
+        document.getElementById('plus').addEventListener('click', () => {
+            if(calcState != ""){
+                equal();
+                firstValue = 0;
+                result = calcInput.value
+            } else {
+                result = "";
+                switchAnim();
+            }
+            firstValue = calcInput.value;
+            setTimeout(() => {calcInput.value = result}, 150)
+            calcState = "addition";
+            inAnimS();
+            calcSt.textContent = "+";
+        });
+        
+        document.getElementById('minus').addEventListener('click', () => {
+            if(calcState != ""){
+                equal();
+                firstValue = 0;
+                result = calcInput.value
+            } else {
+                result = "";
+                switchAnim();
+            }
+            firstValue = calcInput.value;
+            setTimeout(() => {calcInput.value = result}, 150)
+            calcState = "substract";
+            inAnimS();
+            calcSt.textContent = "-";
+        });
+        
+        document.getElementById('multiply').addEventListener('click', () => {
+            if(calcState != ""){
+                equal();
+                firstValue = 0;
+                result = calcInput.value
+            } else {
+                result = "";
+                switchAnim();
+            }
+            firstValue = calcInput.value;
+            setTimeout(() => {calcInput.value = result}, 150)
+            calcState = "multiply";
+            inAnimS();
+            calcSt.textContent = "x";
+        });
+        
+        document.getElementById('divide').addEventListener('click', () => {
+            if(calcState != ""){
+                equal();
+                firstValue = 0;
+                result = calcInput.value
+            } else {
+                result = "";
+                switchAnim();
+            }
+            firstValue = calcInput.value;
+            setTimeout(() => {calcInput.value = result}, 150)
+            calcState = "divide";
+            inAnimS();
+            calcSt.textContent = ":";
+        });
+        
+
+        document.getElementById('eql').addEventListener('click', () => {
+            equal(true);
         });
 
         document.getElementById('backspace').addEventListener('click', () => {
