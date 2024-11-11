@@ -6,11 +6,14 @@
     <title>cps</title>
     <style>
         @import url('https://fonts.cdnfonts.com/css/noah-grotesque');
+        @import url('https://fonts.cdnfonts.com/css/seven-segment');
+
         
         body {
             background: #151515;
             color: white;
             font-family: 'Noah Grotesque', sans-serif;
+            text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #e2e2e2, 0 0 40px #dbdbdb;
             overflow-y: hidden;
         }
 
@@ -24,7 +27,7 @@
 
         h1 {
             text-align: center;
-            margin-top: 150px;
+            margin-top: 15vh;
             font-size: 50px;
         }
 
@@ -93,7 +96,7 @@
             position: absolute;
             z-index: 999;
             float: left;
-            top: 200px;
+            top: 5vh;
             left: -270px;
             padding-right: 8%;
             transition: .6s cubic-bezier(0.16, 1, 0.3, 1);
@@ -109,7 +112,7 @@
             text-transform: uppercase;
             text-align: center;
             border: 2px solid white;
-            padding: 10% 35%;
+            padding: 5vh 35%;
             width: 50%;
             font-size: 25px;
             transition: .6s cubic-bezier(0.16, 1, 0.3, 1);
@@ -119,17 +122,18 @@
             background-position: -100% 0;
             background-size: 50%;
             filter: brightness(50%);
+            text-shadow: none;
         }
 
         nav ul li:hover {
             filter: brightness(100%) !important;
-            padding: 25% 39%;
+            padding: 8vh 39%;
             background-position: 8% 0;
         }
 
         nav ul li:active {
             transition: .1s cubic-bezier(0.16, 1, 0.3, 1);
-            padding: 30%;
+            padding: 6vh 25%;
         }
 
         @keyframes moveout {
@@ -143,6 +147,119 @@
             100% {transform: translateY(0);}
         }
 
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+        }
+
+        #calc {
+            width: 60vw;
+            display: flex;
+            align-items: center;
+            margin: auto;
+            text-align: center;
+        }
+
+        @media only screen and (max-width: 1000px) {
+            #calc {
+            width: 100vw;
+            display: flex;
+            align-items: center;
+            margin: auto;
+            text-align: center;
+            }
+        }
+
+        #calcInput {
+            display: block;
+            position: relative;
+            right: 1vw;
+            width: 100%;
+            height: 100%;
+            margin: auto;
+            text-align: right;
+            text-shadow: 0 0 6px #e2e2e2, 0 0 10px #dbdbdb;
+            font-size: 400%;
+            font-family: 'Seven Segment', sans-serif;
+            background-color: transparent;
+            border: none;
+            outline: none;
+        }
+
+        .writePop {
+            animation: writePop .15s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .slicePop {
+            animation: slicePop .15s ease-in-out;
+        }
+
+        @keyframes writePop {
+            0% {right: -25px;}
+            100% {right: 1vw;}
+        }
+        
+        @keyframes slicePop {
+            0% {right: 2vw;}
+            10% {right: -1px;}
+            100% {right: 1vw;}
+        }
+
+        @keyframes ICtransition {
+            0% {transform: translateY(0%);}
+            50% {transform: translateY(-75%);}
+            51% {transform: translateY(75%);}
+            100% {transform: translateY(0%);}
+        }
+
+        #calcInputContainer {
+            margin: auto;
+            background-color: black;
+            width: 49%;
+            height: 10vh;
+            border: 2px solid white;
+            border-radius: 1vh;
+            clip-path: inset(0% 0%);
+            transition: .1s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        #calcInputContainer:active {
+            width: 47.5%;
+        } 
+
+        .calcButton {
+            width: 12%;
+            height: 7vh;
+            margin: .2vh 0;
+            background: radial-gradient(#333333 10%, #000000 90%);
+            text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #e2e2e2, 0 0 40px #dbdbdb;
+            font-size: 160%;
+            transition: .2s cubic-bezier(0.34, 1.56, 0.64, 1);
+            border-radius: 1vh;
+        }
+
+        .calcButton:hover {
+            transform: scale(1.05);
+            text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #e2e2e2, 0 0 40px #dbdbdb;
+        }
+        
+        .calcButton:active {
+            transform: scale(.9);
+        }
+
+        #eql {
+            filter: invert(100%);
+            background: radial-gradient(#000000 30%, #ffffff 100%);
+        }
+
+        #C {     
+            background: radial-gradient(#af0202 10%, #000000 90%);
+        }
+        
+        .cNumB {
+            background-color: #202020;
+        }
     </style>
 </head>
 <body>
@@ -191,7 +308,39 @@
     </div>
 
     <div id="calc" class="sect">
-        <h1>bedzie kiedys lol</h1>
+        <h1>kalkulalaltor (nie dziaua jeszcze wszystko)</h1>
+
+        <div id="calcInputContainer"><input type="number" id="calcInput"></div>
+        <button class="calcButton" id="C">C</button>
+        <button class="calcButton" id=";3">;3</button>
+        <button class="calcButton" id="lol">lol</button>
+        <button class="calcButton" id="backspace">←</button>
+        <br>
+        <button class="calcButton" id="pwr">x²</button>
+        <button class="calcButton" id="sqrt">√</button>
+        <button class="calcButton" id="log">log</button>
+        <button class="calcButton" id="divide">:</button>
+        <br>
+        <button class="calcButton cNumB" id="7">7</button>
+        <button class="calcButton cNumB" id="8">8</button>
+        <button class="calcButton cNumB" id="9">9</button>
+        <button class="calcButton" id="multiply">x</button>
+        <br>
+        <button class="calcButton cNumB" id="4">4</button>
+        <button class="calcButton cNumB" id="5">5</button>
+        <button class="calcButton cNumB" id="6">6</button>
+        <button class="calcButton" id="minus">-</button>
+        <br>
+        <button class="calcButton cNumB" id="1">1</button>
+        <button class="calcButton cNumB" id="2">2</button>
+        <button class="calcButton cNumB" id="3">3</button>
+        <button class="calcButton" id="plus">+</button>
+        <br>
+        <button class="calcButton" id="pm">+/-</button>
+        <button class="calcButton cNumB" id="0">0</button>
+        <button class="calcButton" id="comma">.</button>
+        <button class="calcButton" id="eql">=</button>
+
     </div>
 
     <div id="cs" class="sect">
@@ -235,6 +384,48 @@
         const pbNum = document.getElementById("number2");
         const delayNum = document.getElementById("number3");
         const avgdelayNum = document.getElementById("number4");
+
+        const calcInput = document.getElementById("calcInput");
+
+        function maxlenght() {
+            if (calcInput.value.length > 16) {
+                calcInput.classList.remove("writePop");
+                calcInput.value = calcInput.value.slice(0, 16);
+            }
+        }
+
+        function inAnim() {
+            calcInput.style.animation = "none";
+            void calcInput.offsetWidth;
+            calcInput.style.animation = "";
+            calcInput.classList.add("writePop");
+        }
+
+        calcInput.oninput = function () {
+            maxlenght();
+            inAnim();
+        }
+
+        function IfOneInCalcInput() {
+            // Access the first stylesheet
+            const styleSheet = document.styleSheets[0];
+
+            // Find and update the keyframe rule
+            for (const rule of styleSheet.cssRules) {
+            if (rule.type === CSSRule.KEYFRAMES_RULE && rule.name === 'writePop') {
+                rule.cssRules[0].style.right = '-10px'; // Update the 0% keyframe
+                break;
+            }
+            }
+        }
+
+        calcInput.addEventListener("animationstart", () => {
+            if(calcInput.value % 10==1){
+                IfOneInCalcInput();
+            }
+        });
+        
+        const calcMeow = document.getElementById(";3");
         var cps = 0;
         var pb = parseInt(getCookie("pb")) || 0;
         pbNum.textContent = pb;
@@ -246,10 +437,10 @@
         let timeElapsed = 0;
         let _timeElapsed = 0;
 
-        cpsS.style.display = 'block';
-        calcS.style.display = 'none';
+        cpsS.style.display = 'none';
+        calcS.style.display = 'block';
         csS.style.display = 'none';
-        var currentS = cpsS;
+        var currentS = calcS;
 
         function moveElementToMouse(event) {
             cps += 1;
@@ -375,9 +566,6 @@
                     break;  
             }
         }
-
-
-
         
         click.addEventListener('click', moveElementToMouse);
 
@@ -398,8 +586,86 @@
         csB.addEventListener('click', () => change(csS));
         ep.addEventListener('click', () => window.open('https://xtimgg.github.io/meow/', '_blank').focus);
         rr.addEventListener('click', () => window.open('https://bitly.com/98K8eH', '_blank').focus);
+
+        document.getElementById('lol').addEventListener('click', () => calcInput.value = 69);        
+        calcMeow.addEventListener('click', () => {
+            switchAnim();
+            setTimeout(() => {calcInput.type = "text"; calcInput.value = "meow ;3";}, 150)
+            setTimeout(() => {
+                switchAnim();
+                setTimeout(() => calcInput.type = "number", 150)
+            }, 800)
+        });
+
+        let addComma = false;
+        document.getElementById('comma').addEventListener('click', () => addComma = true);
+
+
+        calcInput.addEventListener("animationend", () => {
+            calcInput.classList.remove("writePop");
+            calcInput.classList.remove("slicePop");
+        });
+
+        function calcBF(num) {
+            document.getElementById(num).addEventListener('click', () => {
+                if (!addComma) {
+                    calcInput.value += num;
+                    inAnim();
+                } else {
+                    calcInput.value += '.' + num;
+                    addComma = false;
+                    inAnim();
+                }   
+                maxlenght();
+            });
+        }
+
+        for (let i = 0; i <= 9; i++) {
+            calcBF(i);
+        }
+
+
+        function switchAnim() {
+            calcInput.style.animation = "none";
+            void calcInput.offsetWidth;
+            calcInput.style.animation = "";
+            calcInput.style.animation = `ICtransition .3s cubic-bezier(.98,-0.64,.1,1.63)`
+        }
+
+        document.getElementById('pm').addEventListener('click', () => {calcInput.value *= -1, inAnim();});
+
+        document.getElementById('sqrt').addEventListener('click', () => {
+            switchAnim();
+            setTimeout(() => {calcInput.value = Math.sqrt(calcInput.value); maxlenght();}, 150)
+        });
+
+        document.getElementById('pwr').addEventListener('click', () => {
+            switchAnim();
+            setTimeout(() => {calcInput.value *= calcInput.value; maxlenght();}, 150)
+        });
         
 
+        document.getElementById('log').addEventListener('click', () => {
+            switchAnim();
+            setTimeout(() => {calcInput.value = Math.log(calcInput.value); maxlenght();}, 150)
+        });
+        
+        document.getElementById('C').addEventListener('click', () => {
+            switchAnim();
+            setTimeout(() => calcInput.value = "", 100)
+        });
+
+        document.getElementById('backspace').addEventListener('click', () => {
+            calcInput.style.animation = "none";
+            void calcInput.offsetWidth;
+            calcInput.style.animation = "";
+            calcInput.classList.add("slicePop");
+            if (calcInput.value.slice(-2, -1) === ".") {
+                calcInput.value = calcInput.value.slice(0, -2);
+            } else {
+                calcInput.value = calcInput.value.slice(0, -1);
+            }
+        });
     </script>
 </body>
 </html>
