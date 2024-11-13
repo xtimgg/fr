@@ -8,15 +8,17 @@
         @import url('https://fonts.cdnfonts.com/css/noah-grotesque');
         @import url('https://fonts.cdnfonts.com/css/seven-segment');
 
+        * {
+            font-family: 'Noah Grotesque', sans-serif;
+        }
         
         body {
             background: #151515;
             color: white;
-            font-family: 'Noah Grotesque', sans-serif;
-            text-shadow: 0 0 5px #fff, 0 0 10px #ffffffb2, 0 0 20px #e2e2e271, 0 0 30px #dbdbdb;
             overflow-y: hidden;
+            overflow-x: hidden;
         }
-
+        
         .sect {
             position: absolute;
             left: 0; 
@@ -25,12 +27,98 @@
             width: fit-content;
         }
 
+        #credits {
+            font-size: 10px;
+            position: absolute;
+            bottom: 2vh;
+            right: 1vw;
+            background-color: white;
+            border-radius: 100px;
+            padding: 3px;
+            width: 12px;
+            white-space: nowrap;
+            overflow: hidden;
+            border: 1px solid white;
+            transition: .3s cubic-bezier(.98,-0.64,.1,1.63);
+        }
+
+        #credits:hover {
+            background-color: #202020;
+            width: 80px;
+        }
+
         h1 {
             text-align: center;
             margin-top: 15vh;
             font-size: 50px;
+            text-shadow: 0 0 2px #fff, 0 0 4px #fff, 0 0 8px #fff, 0 0 16px #fff, 0 0 32px #fff;
         }
 
+        
+        nav {
+            position: absolute;
+            z-index: 999;
+            float: left;
+            top: 5vh;
+            left: -270px;
+            padding-right: 8%;
+            transition: .6s cubic-bezier(0.16, 1, 0.3, 1);
+            height: 100%;
+        }
+
+        nav:hover {
+            left: -50px;
+        }
+
+        nav ul li {
+            list-style-type: none;
+            text-transform: uppercase;
+            text-align: center;
+            border: 2px solid white;
+            padding: 5vh 35px;
+            width: 50%;
+            font-size: 25px;
+            transition: .6s cubic-bezier(0.16, 1, 0.3, 1);
+            cursor: pointer;
+            user-select: none;
+            background: linear-gradient(to right, #404040 50%, #303030 50%) repeat;
+            background-position: -100% 0;
+            background-size: 50%;
+            filter: brightness(50%);
+            text-shadow: none;
+        }
+
+        nav ul li:hover {
+            filter: brightness(100%) !important;
+            padding: 8vh 39px;
+            background-position: 8% 0;
+        }
+
+        nav ul li:active {
+            transition: .1s cubic-bezier(0.16, 1, 0.3, 1);
+            padding: 6vh 25px;
+        }
+
+        @keyframes moveout {
+            0% {transform: translateY(0%);}
+            50% {transform: translateY(-110vh);}
+            100% {transform: translateY(-110vh);}
+        }
+
+        @keyframes movein {
+            0% {transform: translateY(110vh);}
+            100% {transform: translateY(0);}
+        }
+
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+        }
+
+
+
+        /*cps styling*/
 
         #click {
             margin: auto;
@@ -92,66 +180,8 @@
             display: none;
         }
 
-        nav {
-            position: absolute;
-            z-index: 999;
-            float: left;
-            top: 5vh;
-            left: -270px;
-            padding-right: 8%;
-            transition: .6s cubic-bezier(0.16, 1, 0.3, 1);
-            height: 100%;
-        }
 
-        nav:hover {
-            left: -50px;
-        }
-
-        nav ul li {
-            list-style-type: none;
-            text-transform: uppercase;
-            text-align: center;
-            border: 2px solid white;
-            padding: 5vh 35%;
-            width: 50%;
-            font-size: 25px;
-            transition: .6s cubic-bezier(0.16, 1, 0.3, 1);
-            cursor: pointer;
-            user-select: none;
-            background: linear-gradient(to right, #404040 50%, #303030 50%) repeat;
-            background-position: -100% 0;
-            background-size: 50%;
-            filter: brightness(50%);
-            text-shadow: none;
-        }
-
-        nav ul li:hover {
-            filter: brightness(100%) !important;
-            padding: 8vh 39%;
-            background-position: 8% 0;
-        }
-
-        nav ul li:active {
-            transition: .1s cubic-bezier(0.16, 1, 0.3, 1);
-            padding: 6vh 25%;
-        }
-
-        @keyframes moveout {
-            0% {transform: translateY(0%);}
-            50% {transform: translateY(-110vh);}
-            100% {transform: translateY(-110vh);}
-        }
-
-        @keyframes movein {
-            0% {transform: translateY(110vh);}
-            100% {transform: translateY(0);}
-        }
-
-        input::-webkit-outer-spin-button,
-        input::-webkit-inner-spin-button {
-        -webkit-appearance: none;
-        margin: 0;
-        }
+        /* calc styling */
 
         #calc {
             width: 60vw;
@@ -169,6 +199,10 @@
             margin: auto;
             text-align: center;
             }
+
+            nav {
+                left: -222px;
+            }
         }
 
         #calcInput {
@@ -179,13 +213,16 @@
             height: 100%;
             margin: auto;
             text-align: right;
-            text-shadow: 0 0 6px #e2e2e2, 0 0 10px #dbdbdb;
+            color: white;
+            text-shadow: 0 0 1.74px rgba(255, 255, 255, 0.09), 0 0 3.48px rgba(255, 255, 255, 2.5), 0 0 6.96px rgba(255, 255, 255, 1.25), 0 0 13.93px rgba(255, 255, 255, 0.62);
             font-size: 400%;
             font-family: 'Seven Segment', sans-serif;
-            color: white;
             background-color: transparent;
             border: none;
             outline: none;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         .writePop {
@@ -197,7 +234,7 @@
         }
 
         @keyframes writePop {
-            0% {right: -25px;}
+            0% {right: -10px;}
             100% {right: 1vw;}
         }
         
@@ -249,6 +286,7 @@
             font-size: 160%;
             transition: .2s cubic-bezier(0.34, 1.56, 0.64, 1);
             border-radius: 1vh;
+            border: 2px outset;
         }
 
         .calcButton:hover {
@@ -262,7 +300,8 @@
 
         #eql {
             filter: invert(100%);
-            background: radial-gradient(#000000 30%, #ffffff 100%);
+            background: radial-gradient(#303030, #000000, #6e6e6e);
+            box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.459);
         }
 
         #C {     
@@ -280,15 +319,119 @@
             font-family: 'Seven Segment', sans-serif;
             font-size: 200%;
         }
+
+
+
+        /* glower styling */
+
+        #glow {
+            text-shadow: 0 0 1px rgba(255, 255, 255, 0.555), 0 0 2px #fff, 0 0 4px #fff, 0 0 8px #fff, 0 0 16px #fff, 0 0 32px #fff;
+            text-align: center;
+            margin-top: 5vh;
+            margin-bottom: 10vh;
+            font-size: 100px;
+        }
+
+        #glow p {
+            font-size: 30px;
+        }
+
+        #sliders {
+            display: block;
+            margin-left: calc(35vw - 200px);
+            width: 85vw;
+            font-size: 30px;
+        }
+
+        .glowSlider {
+            appearance: none;
+            outline: none;
+            background-color: rgb(78, 78, 78);
+            height: .7vh;
+            width: 50%;
+            border-radius: 10px;
+            box-shadow: -.5px -.5px white;
+            margin: 10px;
+            transition: .2s;
+        }
+
+        .glowSlider:hover {
+            background-color: rgb(109, 109, 109);
+        }
+        
+        .glowSlider::-webkit-slider-thumb{
+            appearance: none;
+            background: radial-gradient(#404040, gray);
+            color: gray;
+            height: 2vh;
+            width: 2vh;
+            border-radius: 100%;
+            box-shadow: 0 0 3px black;
+            transition: 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .glowSlider::-webkit-slider-thumb:hover {
+            transform: scale(1.3);
+            filter: brightness(150%);
+        }
+
+        .glowSlider::-webkit-slider-thumb:active {
+            transform: scale(1.1);
+            filter: brightness(120%);
+        }
+
+        #glowCodeOutput {
+            display: block;
+            background-color: #050505;
+            padding: 1%;
+            padding-right: 15%;
+            width: 50vw;
+            margin: 5vh auto;
+            border-radius: 43px;
+            border: 1px solid white;
+            text-wrap: wrap;
+            font-size: 20px;
+            position: relative;
+        }
+
+        #glowStyling {
+            display: block;
+            transform: translateX(65px);
+        }
+
+        #copyCode {
+            position: absolute;
+            right: 2vw;
+            top: 3vh;
+            background-color: #151515;
+            color: white;
+            cursor: pointer;
+            border-radius: 10px;
+            padding: 10px;
+            font-size: 15px;
+            transition: 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        #copyCode:hover {
+            transform: scale(1.03);
+            background-color: #252525;
+        }
+
+        #copyCode:active {
+            transform: scale(.9);
+            background-color: #404040;
+        }
     </style>
 </head>
 <body>
+
+    <span id="credits">by: xtimgg (tp2at)</span>
     
     <nav>
         <ul>
             <li id="bcps">cps</li>
             <li id="bcalc">calc</li>
-            <li id="bcs">coming soon</li>
+            <li id="bcs">glower</li>
             <li id="ep">fajne takie</li>
             <li id="rr">nothin 🤫</li>
         </ul>
@@ -328,12 +471,12 @@
     </div>
 
     <div id="calc" class="sect">
-        <h1>kalkulalaltor (nie dziaua jeszcze wszystko)</h1>
+        <h1>kalkulator (wip)</h1>
 
         <div id="calcInputContainer"><input type="number" id="calcInput"><span id="calcState"></span></div>
         <button class="calcButton" id="C">C</button>
         <button class="calcButton" id=";3">;3</button>
-        <button class="calcButton" id="lol">lol</button>
+        <button class="calcButton" id="fact">!</button>
         <button class="calcButton" id="backspace">←</button>
         <br>
         <button class="calcButton" id="pwr">x²</button>
@@ -364,7 +507,23 @@
     </div>
 
     <div id="cs" class="sect">
-        <h1>no i po chuj klikasz to jak pisze ze coming soon</h1>
+        <div id="glow">sample text <br> <p>smaller sample text</p></div>
+    
+        <div id="sliders">
+            glow strength: <input type="range" min="0" max="300" value="100" name="strength" id="glowStrength" class="glowSlider"> <span id="glowStrengthNum">1</span> <br>
+            glow spread: <input type="range" min="0" max="15" value="3" name="spread" id="glowSpread" class="glowSlider"> <span id="glowSpreadNum">1</span> <br>
+            glow blend: <input type="range" min="0" max="300" value="100" name="blend" id="glowBlend" class="glowSlider"> <span id="glowBlendNum">1</span>
+        </div>
+    
+        <pre id="glowCodeOutput">
+            <button id="copyCode">copy<br>code</button>
+            <code>
+        * {
+            <span id="glowStyling">text-shadow: </span>
+        }
+            </code>
+        </pre>
+        <script src="glower.js"></script>
     </div>
 
     <script>
@@ -408,11 +567,12 @@
         const calcInput = document.getElementById("calcInput");
         let calcInputOverwrite = false;
 
+        
         function maxlenght() {
-            if (calcInput.value.length > 16) {
+            /*if (calcInput.value.length > 16) {
                 calcInput.classList.remove("writePop");
                 calcInput.value = calcInput.value.slice(0, 16);
-            }
+            }  zostawiam na wszelki wypadek */
         }
 
         function inAnim() {
@@ -432,25 +592,6 @@
             inAnim();
         }
 
-        function IfOneInCalcInput() {
-            // Access the first stylesheet
-            const styleSheet = document.styleSheets[0];
-
-            // Find and update the keyframe rule
-            for (const rule of styleSheet.cssRules) {
-            if (rule.type === CSSRule.KEYFRAMES_RULE && rule.name === 'writePop') {
-                rule.cssRules[0].style.right = '-10px'; // Update the 0% keyframe
-                break;
-            }
-            }
-        }
-
-        calcInput.addEventListener("animationstart", () => {
-            if(calcInput.value % 10==1){
-                IfOneInCalcInput();
-            }
-        });
-        
         const calcMeow = document.getElementById(";3");
         var cps = 0;
         var pb = parseInt(getCookie("pb")) || 0;
@@ -613,7 +754,21 @@
         ep.addEventListener('click', () => window.open('https://xtimgg.github.io/meow/', '_blank').focus);
         rr.addEventListener('click', () => window.open('https://bitly.com/98K8eH', '_blank').focus);
 
-        document.getElementById('lol').addEventListener('click', () => calcInput.value = 69);        
+        document.getElementById('fact').addEventListener('click', () => {
+            var fact = 1;
+            for(i = 1; i<=Math.abs(calcInput.value); i++) {
+                fact *= i;
+            }
+            switchAnim();
+            setTimeout(() => {
+                if(calcInput.value>=0){
+                    calcInput.value = fact;
+                } else {
+                    calcInput.value = -(fact);
+                }
+            }, 200)
+        });        
+        
         calcMeow.addEventListener('click', () => {
             switchAnim();
             setTimeout(() => {calcInput.type = "text"; calcInput.value = "meow ;3";}, 150)
@@ -624,7 +779,13 @@
         });
 
         let addComma = false;
-        document.getElementById('comma').addEventListener('click', () => addComma = true);
+        document.getElementById('comma').addEventListener('click', () => {
+            if(calcInput.value.includes("."||",")) {
+                addComma = false;
+            } else {
+                addComma = true;
+            }
+        });
 
 
         calcInput.addEventListener("animationend", () => {
@@ -690,7 +851,7 @@
 
         let firstValue = 0;
         let calcState = "";
-        calcSt = document.getElementById('calcState');
+        const calcSt = document.getElementById('calcState');
 
         
         function inAnimS() {
@@ -717,7 +878,7 @@
                 } else if(calcState=="multiply") {
                     setTimeout(() => calcInput.value = Number(firstValue) * Number(calcInput.value), 150)
                 } else if(calcState=="divide") {
-                    setTimeout(() => calcInput.value = Number(calcInput.value) / Number(firstValue), 150)
+                    setTimeout(() => calcInput.value = Number(firstValue) / Number(calcInput.value), 150)
                 }
                 calcInputOverwrite = true;
             } else {
