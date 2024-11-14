@@ -25,6 +25,7 @@
             right: 0; 
             margin-inline: auto; 
             width: fit-content;
+            align-items: center;
         }
 
         #credits {
@@ -116,6 +117,48 @@
         margin: 0;
         }
 
+
+        .switch {
+            position: relative;
+            background: radial-gradient(hsl(216, 100%, 50%), #000);
+            filter: grayscale(1);
+            margin:  10px 0 0 10px;
+            height: 30px;
+            aspect-ratio: 2.5;
+            border-radius: 150px;
+            border: outset 2px darkgray;
+            box-shadow: 0 0 15px #303030;
+            transition: .3s cubic-bezier(.28,1.41,.64,1);
+            display: inline-block;
+            transform: translateY(10px);
+        }
+
+        .switch:hover {
+            transform: scale(1.03) translateY(10px);
+        }
+
+        .switch-handle {
+            position: absolute;
+            height: 80%;
+            top: 10%;
+            left: 5%;
+            aspect-ratio: 1;
+            background: radial-gradient(#ffffff, #1b1b1b);
+            border-radius: 150px;
+            box-shadow: 0 0 10px rgb(0, 0, 0);
+        }
+
+        @keyframes switch {
+            0% {left: 5%;}
+            10% {transform: scale(1.2, .8);}
+            100% {left: 63%;}
+        }
+
+        @keyframes switchoff {
+            0% {left: 63%;}
+            10% {transform: scale(1.2, .8);}
+            100% {left: 5%;}
+        }
 
 
         /*cps styling*/
@@ -328,7 +371,7 @@
             text-shadow: 0 0 1px rgba(255, 255, 255, 0.555), 0 0 2px #fff, 0 0 4px #fff, 0 0 8px #fff, 0 0 16px #fff, 0 0 32px #fff;
             text-align: center;
             margin-top: 5vh;
-            margin-bottom: 10vh;
+            margin-bottom: 3vh;
             font-size: 100px;
         }
 
@@ -410,6 +453,7 @@
             padding: 10px;
             font-size: 15px;
             transition: 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+            border: 2px outset;
         }
 
         #copyCode:hover {
@@ -460,7 +504,7 @@
             <span id="number4">0</span> <br>
         </section>
 
-        <!--svg used as a mask cuz css clip-path is fuckin dumb-->
+        <!--svg used as a mask cuz css clip-path is f*ckin dumb-->
         <svg width="0" height="0">
             <defs>
             <clipPath id="roundedClip" clipPathUnits="objectBoundingBox">
@@ -512,7 +556,10 @@
         <div id="sliders">
             glow strength: <input type="range" min="0" max="300" value="100" name="strength" id="glowStrength" class="glowSlider"> <span id="glowStrengthNum">1</span> <br>
             glow spread: <input type="range" min="0" max="15" value="3" name="spread" id="glowSpread" class="glowSlider"> <span id="glowSpreadNum">1</span> <br>
-            glow blend: <input type="range" min="0" max="300" value="100" name="blend" id="glowBlend" class="glowSlider"> <span id="glowBlendNum">1</span>
+            glow blend: <input type="range" min="0" max="300" value="100" name="blend" id="glowBlend" class="glowSlider"> <span id="glowBlendNum">1</span> <br>
+            glow hue: <input type="range" min="0" max="359" value="250" name="hue" id="glowHue" class="glowSlider"> <span id="glowHueColor">&#9632;</span> <br>
+            coloured glow <div class="switch" id="glowHueSwitch" style="margin-right: 10%;"><div class="switch-handle" id="glowHueSwitchHandle"></div></div>
+            coloured text <div class="switch" id="textHueSwitch"><div class="switch-handle" id="textHueSwitchHandle"></div></div>
         </div>
     
         <pre id="glowCodeOutput">
@@ -527,6 +574,8 @@
     </div>
 
     <script>
+        // caly ten skrypt do uporzadkowania jeszcze XD
+
         function setCookie(name, value, days = 3650) {
             let expires = "";
             if (days) {
@@ -547,6 +596,28 @@
                 }
             }
             return null;
+        }
+
+
+        function switching(switchid, handleid, value) {
+            const switchC = document.getElementById(switchid);
+            const switchH = document.getElementById(handleid);
+            switchC.addEventListener('click', () => {
+                switchH.style.animation = "none";
+                void switchH.offsetWidth;
+                switchH.style.animation = "";
+                if(value) {
+                    switchH.style.animation = `switchoff .3s cubic-bezier(.28,1.41,.64,1)`;
+                    switchC.style.filter = `grayscale(1)`;
+                    switchH.style.left = `5%`;
+                    value = false;
+                } else {
+                    switchH.style.animation = `switch .3s cubic-bezier(.28,1.41,.64,1)`;
+                    switchC.style.filter = `grayscale(0)`;
+                    switchH.style.left = `63%`;
+                    value = true;
+                }
+            });
         }
 
         const cpsS = document.getElementById("cps");
@@ -607,7 +678,7 @@
         cpsS.style.display = 'none';
         calcS.style.display = 'block';
         csS.style.display = 'none';
-        var currentS = calcS;
+        var currentS = csS;
 
         function moveElementToMouse(event) {
             cps += 1;
@@ -647,19 +718,12 @@
                 crazy = true;
             }
 
-            
-            // to ai mi pisalo w sensie samo to klonowanie bo animacja autorska >>
-
-            // Clone the `anim` element
             const animClone = document.getElementById("anim").cloneNode(true);
-            
-            // Get the `click` element's bounding box to position the clone relative to it
             const clickRect = click.getBoundingClientRect();
 
-            // Position and style the clone
             animClone.style.position = "absolute";
-            animClone.style.left = `${event.clientX - clickRect.left - 150}px`; // Center horizontally
-            animClone.style.top = `${event.clientY - clickRect.top - 150}px`; // Center vertically
+            animClone.style.left = `${event.clientX - clickRect.left - 150}px`;
+            animClone.style.top = `${event.clientY - clickRect.top - 150}px`;
             animClone.style.opacity = "100%";
             animClone.style.animation = "anim .6s ease-out";
             if(crazy==true) {
@@ -667,15 +731,12 @@
                 animClone.style.background = color;
             };
 
-            // Append the clone to the `mask` div to apply clipping
             mask.appendChild(animClone);
 
-            // Remove the clone once the animation ends
             animClone.addEventListener("animationend", () => {
                 animClone.remove();
             }, { once: true });
         }
-        // << do tego miejsca ai modified code
 
         let animating = false;
         let pendingChange = "";
@@ -874,7 +935,7 @@
                 if(calcState=="addition") {
                     setTimeout(() => calcInput.value = Number(firstValue) + Number(calcInput.value), 150)
                 } else if(calcState=="substract") {
-                    setTimeout(() => calcInput.value = Number(calcInput.value) - Number(firstValue), 150)
+                    setTimeout(() => calcInput.value = Number(firstValue) - Number(calcInput.value), 150)
                 } else if(calcState=="multiply") {
                     setTimeout(() => calcInput.value = Number(firstValue) * Number(calcInput.value), 150)
                 } else if(calcState=="divide") {
